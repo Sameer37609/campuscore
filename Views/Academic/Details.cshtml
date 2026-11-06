@@ -1,0 +1,9 @@
+@inject LocalWriteAccess WriteAccess
+@model DetailPage
+@{ViewData["Title"]=Model.Title;}
+<a class="back-link" href="@Model.BackUrl">← Back to directory</a>
+<section class="page-heading"><div><div class="eyebrow">@Model.Eyebrow.ToUpperInvariant()</div><h1>@Model.Title<span class="heading-dot">.</span></h1><p>@Model.Subtitle</p></div><span class="badge-status @Model.Status.ToLowerInvariant().Replace(" ","-")">@Model.Status</span></section>
+@if(WriteAccess.Allows(Context)){<div class="detail-actions"><a class="btn btn-primary" href="@Model.BackUrl/Edit/@ViewContext.RouteData.Values["id"]">Edit record</a><a class="btn btn-light" href="@Model.BackUrl/Delete/@ViewContext.RouteData.Values["id"]">Remove record</a></div>}
+<section class="panel detail-panel"><div class="panel-heading"><h2>Record details</h2><span class="soft-label">Fictional sample</span></div><dl class="facts-grid">@foreach(var f in Model.Facts){<div><dt>@f.Key</dt><dd>@f.Value</dd></div>}</dl></section>
+<section class="panel related-panel"><div class="panel-heading"><div><h2>@Model.RelatedHeading</h2><p>Open a record to explore its relationships.</p></div><span class="soft-label">@Model.Related.Count records</span></div>@if(Model.Related.Count==0){<div class="empty-state"><h3>No linked records yet</h3><p>This sample record has no enrollments.</p></div>}else{<partial name="_Rows" model="Model.Related"/>}</section>
+<div class="demo-note"><svg aria-hidden="true"><use href="/icons.svg#info"/></svg><span>@(AppMode.IsPublicDemo?"This fictional sample record is part of the read-only portfolio demo.":"Academic record stored in the local development database.")</span></div>

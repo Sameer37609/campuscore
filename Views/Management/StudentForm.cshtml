@@ -1,0 +1,16 @@
+@model StudentForm
+@{ViewData["Title"]=Model.Id==0?"Create student":"Edit student";}
+<a class="back-link" href="/Students">← Back to students</a>
+<section class="page-heading"><div><div class="eyebrow">STUDENT MANAGEMENT</div><h1>@ViewData["Title"]<span class="heading-dot">.</span></h1><p>Academic records saved to your local development database.</p></div></section>
+<form class="panel edit-form" method="post" action="/Students/SaveStudent">
+@Html.AntiForgeryToken()<input asp-for="Id" type="hidden"/><input asp-for="Version" type="hidden"/>
+<div asp-validation-summary="All" class="validation-summary" role="alert"></div>
+<div class="edit-grid">
+<div><label asp-for="Number"></label><input asp-for="Number" class="form-control" maxlength="30" required/><span asp-validation-for="Number"></span></div>
+<div><label asp-for="Name"></label><input asp-for="Name" class="form-control" maxlength="100" required/><span asp-validation-for="Name"></span></div>
+<div class="wide"><label asp-for="Email"></label><input asp-for="Email" class="form-control" type="email" maxlength="254" required/><span asp-validation-for="Email"></span></div>
+<div><label asp-for="Department"></label><select asp-for="Department" class="form-select">@foreach(var v in AcademicOptions.Departments){<option value="@v">@v</option>}</select></div>
+<div><label asp-for="Year"></label><select asp-for="Year" class="form-select">@for(var i=1;i<=4;i++){<option value="@i">Year @i</option>}</select></div>
+<div><label asp-for="Status"></label><select asp-for="Status" class="form-select">@foreach(var v in AcademicOptions.StudentStatuses){<option value="@v">@v</option>}</select></div>
+</div><div class="form-actions"><button class="btn btn-primary" type="submit">Save student</button><a class="btn btn-light" href="/Students">Cancel</a></div>
+</form>

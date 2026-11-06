@@ -1,0 +1,8 @@
+@model DeleteForm
+@{ViewData["Title"]="Confirm removal";}
+<a class="back-link" href="/@Model.Kind/Details/@Model.Id">← Back to record</a>
+<section class="page-heading"><div><div class="eyebrow">RECORD MANAGEMENT</div><h1>Confirm removal<span class="heading-dot">.</span></h1><p>Review the record before making a permanent change.</p></div></section>
+<section class="panel edit-form"><h2>@Model.Title</h2>
+@if(Model.Restriction is not null){<div class="form-warning" role="alert">@Model.Restriction</div><a class="btn btn-light" href="/@Model.Kind/Details/@Model.Id">Return to record</a>}
+else{<p class="form-help">This permanently removes this record from your local development database. This action cannot be undone.</p><form method="post" action="/@Model.Kind/Delete/@Model.Id">@Html.AntiForgeryToken()<input asp-for="Id" type="hidden"/><input asp-for="Version" type="hidden"/><button class="btn btn-danger" type="submit">Delete record</button> <a class="btn btn-light" href="/@Model.Kind/Details/@Model.Id">Cancel</a></form>}
+</section>

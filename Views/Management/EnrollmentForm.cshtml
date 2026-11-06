@@ -1,0 +1,23 @@
+@model EnrollmentForm
+@{ViewData["Title"]=Model.Id==0?"Enroll a student":"Update enrollment";}
+<a class="back-link" href="/Enrollments">← Back to enrollments</a>
+<section class="page-heading"><div><div class="eyebrow">ENROLLMENT MANAGEMENT</div><h1>@ViewData["Title"]<span class="heading-dot">.</span></h1><p>Seats are checked when saving. Completed records require a grade.</p></div></section>
+<form class="panel edit-form" method="post" action="/Enrollments/SaveEnrollment">
+@Html.AntiForgeryToken()<input asp-for="Id" type="hidden"/><input asp-for="Version" type="hidden"/>
+<div asp-validation-summary="All" class="validation-summary" role="alert"></div>
+<div class="edit-grid">
+@if(Model.Id==0){
+<div><label asp-for="StudentId"></label><select asp-for="StudentId" class="form-select" required><option value="">Select student</option>@foreach(Student s in ViewBag.Students){<option value="@s.Id">@s.Name · @s.Number · @s.Status</option>}</select></div>
+<div><label asp-for="CourseId"></label><select asp-for="CourseId" class="form-select" required><option value="">Select course</option>@foreach(Course c in ViewBag.Courses){<option value="@c.Id">@c.Code · @c.Title · @c.Status</option>}</select></div>
+<div><label asp-for="Term"></label><select asp-for="Term" class="form-select">@foreach(var v in AcademicOptions.Terms){<option value="@v">@v</option>}</select></div>
+<div><label asp-for="AcademicYear"></label><input asp-for="AcademicYear" class="form-control" min="2000" max="2100" required/></div>
+}else{
+<input asp-for="StudentId" type="hidden"/><input asp-for="CourseId" type="hidden"/><input asp-for="Term" type="hidden"/><input asp-for="AcademicYear" type="hidden"/>
+<div class="wide"><p class="form-help"><strong>@(((Student[])ViewBag.Students).SingleOrDefault(s=>s.Id==Model.StudentId)?.Name) · @(((Course[])ViewBag.Courses).SingleOrDefault(c=>c.Id==Model.CourseId)?.Code)</strong><br/>@Model.Term @Model.AcademicYear · Student, course and term are fixed on an existing record.</p></div>
+}
+<div><label asp-for="EnrolledOn"></label><input asp-for="EnrolledOn" class="form-control" type="date" required/><span asp-validation-for="EnrolledOn"></span></div>
+<div><label asp-for="Status"></label><select asp-for="Status" class="form-select">@foreach(var v in AcademicOptions.EnrollmentStatuses){<option value="@v">@v</option>}</select></div>
+<div><label asp-for="Grade"></label><select asp-for="Grade" class="form-select"><option value="">No grade</option>@foreach(var v in AcademicOptions.Grades){<option value="@v">@v</option>}</select><span asp-validation-for="Grade"></span></div>
+</div><p class="form-help">Only active students can enroll in active courses. Withdrawals release seats. To remove an enrollment, withdraw it first; completed records stay completed and are retained (their grades can be corrected).</p>
+<div class="form-actions"><button class="btn btn-primary" type="submit">Save enrollment</button><a class="btn btn-light" href="/Enrollments">Cancel</a></div>
+</form>

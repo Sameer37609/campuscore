@@ -1,0 +1,45 @@
+# Build, IDE and generated output
+[Bb]in/
+[Oo]bj/
+.vs/
+.vscode/
+artifacts/
+publish/
+TestResults/
+*.user
+*.suo
+*.log
+# Local databases and backups
+*.mdf
+*.ldf
+*.ndf
+*.bak
+*.db
+*.sqlite
+*.sqlite3
+# Local secrets, certificates and data-protection keys
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+appsettings.*.local.json
+secrets.json
+*.pfx
+*.p12
+*.pem
+*.key
+DataProtection-Keys/
+# Machine files
+Thumbs.db
+.DS_Store
+
+# Private machine overrides and temporary QA material
+appsettings.*.private.json
+appsettings.*.Private.json
+*.pubxml.user
+*.publishsettings
+*.trx
+*.dmp
+coverage/
+.cache/
+tmp/

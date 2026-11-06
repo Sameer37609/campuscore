@@ -1,0 +1,22 @@
+@inject LocalWriteAccess WriteAccess
+@{ var controller = ViewContext.RouteData.Values["kind"]?.ToString() ?? ViewContext.RouteData.Values["controller"]?.ToString(); }
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="description" content="CampusCore, a fictional academic administration portfolio demo."/><title>@ViewData["Title"] · CampusCore</title><link rel="icon" href="~/favicon.svg" type="image/svg+xml"/><link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/><link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<aside class="sidebar" id="navigation" aria-label="Main navigation">
+ <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">C<span>·</span></span><span>CampusCore<small>ACADEMIC WORKSPACE</small></span></a>
+ <div class="workspace-label">WORKSPACE <span>01</span></div>
+ <nav aria-label="Primary">@foreach(var item in new[]{("Home","Dashboard","overview"), ("Students","Students","students"),("Courses","Courses","courses"),("Enrollments","Enrollments","enrollments")}) {<a class="nav-item @(controller==item.Item1 ? "selected" : "")" href="@(item.Item1=="Home" ? "/" : "/"+item.Item1)" aria-current="@(controller==item.Item1 ? "page" : null)"><svg aria-hidden="true"><use href="/icons.svg#@item.Item3"/></svg><span>@item.Item2</span>@if(controller==item.Item1){<span class="nav-dot"></span>}</a>}</nav>
+ <div class="sidebar-bottom"><div class="demo-symbol" aria-hidden="true">◈</div><strong>A space to explore.</strong><p>Fictional records. Real workflows.<br/>@(AppMode.IsPublicDemo?"Read-only portfolio demo.":"Local academic workspace.")</p><a href="/Students">Explore the directory <span aria-hidden="true">↗</span></a></div>
+ <div class="sidebar-footer"><span class="avatar small">CC</span><div>CampusCore Demo<small>Academic administration</small></div></div>
+</aside>
+<div class="app-shell">
+ <header class="topbar"><div class="topbar-start"><button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-controls="navigation" aria-expanded="false"><svg aria-hidden="true"><use href="/icons.svg#menu"/></svg><span>Menu</span></button><span class="breadcrumb-label"><span class="breadcrumb-parent">Workspace <span>/</span></span><strong>@(controller=="Home" ? "Dashboard" : controller)</strong></span></div><div class="topbar-end"><span class="demo-pill"><span></span> @(AppMode.IsPublicDemo?"Read-only demo":WriteAccess.Allows(Context)?"Local development":"Read-only local")</span><span class="avatar small admin-avatar" aria-label="CampusCore demo">CC</span></div></header>
+ <main id="main" tabindex="-1">@if(!AppMode.IsPublicDemo && TempData["Success"] is string success){<div class="success-notice" role="status">@success</div>}@RenderBody()</main>
+ <footer class="page-footer"><span>CampusCore <span class="footer-divider">/</span> A Modern Academic Administration Platform</span><span>@(AppMode.IsPublicDemo?"Read-only demo · Fictional data":"Local SQL workspace")</span></footer>
+</div>
+<script src="~/js/site.js" asp-append-version="true" defer></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body></html>

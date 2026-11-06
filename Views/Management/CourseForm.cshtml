@@ -1,0 +1,16 @@
+@model CourseForm
+@{ViewData["Title"]=Model.Id==0?"Create course":"Edit course";}
+<a class="back-link" href="/Courses">← Back to courses</a>
+<section class="page-heading"><div><div class="eyebrow">COURSE MANAGEMENT</div><h1>@ViewData["Title"]<span class="heading-dot">.</span></h1><p>Keep curriculum details and available seats accurate.</p></div></section>
+<form class="panel edit-form" method="post" action="/Courses/SaveCourse">
+@Html.AntiForgeryToken()<input asp-for="Id" type="hidden"/><input asp-for="Version" type="hidden"/>
+<div asp-validation-summary="All" class="validation-summary" role="alert"></div>
+<div class="edit-grid">
+<div><label asp-for="Code"></label><input asp-for="Code" class="form-control" maxlength="20" required/><span asp-validation-for="Code"></span></div>
+<div><label asp-for="Title"></label><input asp-for="Title" class="form-control" maxlength="120" required/><span asp-validation-for="Title"></span></div>
+<div><label asp-for="Department"></label><select asp-for="Department" class="form-select">@foreach(var v in AcademicOptions.Departments){<option value="@v">@v</option>}</select></div>
+<div><label asp-for="Status"></label><select asp-for="Status" class="form-select">@foreach(var v in AcademicOptions.CourseStatuses){<option value="@v">@v</option>}</select></div>
+<div><label asp-for="Credits"></label><input asp-for="Credits" type="number" class="form-control" min="1" max="6" required/><span asp-validation-for="Credits"></span></div>
+<div><label asp-for="Capacity"></label><input asp-for="Capacity" type="number" class="form-control" min="1" max="500" required/><span asp-validation-for="Capacity"></span></div>
+</div><div class="form-actions"><button class="btn btn-primary" type="submit">Save course</button><a class="btn btn-light" href="/Courses">Cancel</a></div>
+</form>

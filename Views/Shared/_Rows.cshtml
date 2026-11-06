@@ -1,0 +1,2 @@
+@model IReadOnlyList<DirectoryRow>
+<div class="records">@foreach(var row in Model) {<div class="record"><div class="person-cell"><span class="avatar" aria-hidden="true">@row.Initials</span><div><a class="record-title" href="@row.Url">@row.Title</a><small>@row.Subtitle</small><small class="record-meta">@row.Id · @row.Year · @row.Detail</small></div></div><span class="badge-status @row.Status.ToLowerInvariant().Replace(" ","-")">@row.Status</span><a class="arrow-link" href="@row.Url" aria-label="View @row.Id">↗</a></div>}</div>
